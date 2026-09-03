@@ -1,0 +1,39 @@
+{
+  "name": "borneflash-tp3",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SQUELETTE du TP 3 — écris les tests de BorneFlash",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "start": "node src/main.ts",
+    "test": "node --test",
+    "typecheck": "tsc",
+    "build": "tsc -p tsconfig.build.json",
+    "start:prod": "node --conditions=production dist/main.js"
+  },
+  "imports": {
+    "#domaine/*": {
+      "production": "./dist/domaine/*.js",
+      "default": "./src/domaine/*.ts"
+    },
+    "#tarification/*": {
+      "production": "./dist/tarification/*.js",
+      "default": "./src/tarification/*.ts"
+    },
+    "#persistance/*": {
+      "production": "./dist/persistance/*.js",
+      "default": "./src/persistance/*.ts"
+    },
+    "#notification/*": {
+      "production": "./dist/notification/*.js",
+      "default": "./src/notification/*.ts"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.0",
+    "typescript": "^6.0.3"
+  }
+}
