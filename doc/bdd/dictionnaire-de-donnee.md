@@ -252,6 +252,7 @@
 | Code        | Désignation                                                                                    | Type               | Taille | Contrainte          | MCD | MLD |
 | ----------- | ---------------------------------------------------------------------------------------------- | ------------------ | :----: | ------------------- | --- | --- |
 | id_rule     | Identifiant de la règle de tarif                                                               | Alphanum           |  255   | Obligatoire, Unique |     |     |
+| id_tariff   | Référence du tarif appliqué par la règle (FK vers `Tariff`)                                    | Alphanum           |  255   | Obligatoire         |     |     |
 | day_of_week | Jour de la semaine récurrent, notation US (0 = Dimanche, 6 = Samedi). Nul = tous les jours     | Numérique - Entier |   1    |                     |     |     |
 | time_start  | Heure de début d'application. Nul = pas de restriction horaire                                 | Date - Heure       |   8    |                     |     |     |
 | time_end    | Heure de fin d'application. Nul = pas de restriction horaire                                   | Date - Heure       |   8    |                     |     |     |
@@ -259,7 +260,7 @@
 | valid_to    | Date de fin d'application. Nul = pas de restriction de date                                    | Date - Jour        |   8    |                     |     |     |
 | priority    | Priorité de la règle en cas d'application simultanée de plusieurs règles (la plus haute gagne) | Numérique          |   3    |                     |     |     |
 
-> Le lien vers `Tariff`, `Zone` et `Borne` se fait via des associations dédiées (voir ci-dessous).
+> Chaque règle référence exactement un `Tariff`. Les liens vers `Zone` et `Borne` se font via des associations dédiées (voir ci-dessous).
 
 ---
 
@@ -322,15 +323,6 @@
 
 > Relie un rôle à l'ensemble des permissions qui lui sont accordées.
 
-### `tariff_rule` (Avoir_une_regle_d_application)
-
-| Code      | Désignation        | Type     | Taille | Contrainte  |
-| --------- | ------------------ | -------- | :----: | ----------- |
-| id_tariff | Identifiant tariff | Alphanum |  255   | Obligatoire |
-| id_rule   | Identifiant règle  | Alphanum |  255   | Obligatoire |
-
-> Relie un tarif (montant) aux règles définissant quand il s'applique.
-
 ### `rule_zone` (Appliquer_une_regle_celon_une_zone)
 
 | Code    | Désignation       | Type     | Taille | Contrainte  |
@@ -340,7 +332,7 @@
 
 > Une règle de tarif appliquée à l'échelle d'une zone géographique.
 
-### `borne_tariff` (Associer_des_tariffs_a_une_borne_spécifique)
+### `borne_rule` (Associer_des_regles_a_une_borne_spécifique)
 
 | Code     | Désignation       | Type     | Taille | Contrainte  |
 | -------- | ----------------- | -------- | :----: | ----------- |
@@ -367,4 +359,143 @@
 - **Suppression de compte (RGPD/CNIL)** : suppression réelle via `DELETE` sur `Personnal` uniquement ; `User` est conservé pour préserver l'intégrité des factures/recharges historiques (obligation de conservation comptable).
 - **Système de permissions (RBAC)** : les vérifications d'accès se font via `User → Role → role_permission → Permission`, en base de données. Une même permission peut être partagée par plusieurs rôles ; un administrateur peut créer un nouveau rôle et lui attribuer un sous-ensemble de permissions sans modification du code applicatif.
 - **Historisation des prix** : les prix appliqués sont figés dans `recharge` (`price_recharge`) et `invoice` (`tarrif_price_applied`). Si le prix du kWh change, les anciennes factures restent justes.
-- **Consentement RGPD** : `personnal.date_consent_tos` prouve l'acceptation des CGU. Le consentement peut être retiré, ce qui déclenche la procédure de suppression de compte.
+
+---
+
+---
+
+# Justification des cardinalités — MCD BorneFlash
+
+Pour chaque association du MCD, deux phrases justifient la cardinalité de chaque côté de la relation.
+
+---
+
+## Zone ↔ Location
+
+- **Zone (0,N)** : une zone peut contenir zéro (nouvelle zone sans site encore créé) ou plusieurs sites de recharge.
+- **Location (1,1)** : chaque site est rattaché à exactement une zone géographique, indispensable pour appliquer la tarification par zone.
+
+## Company ↔ Company_info
+
+- **Company (0,1)** : une entreprise peut ne plus avoir d'informations descriptives si elles ont été supprimées (ex : fin de contrat, RGPD), tout en gardant son identité technique pour préserver les factures passées.
+- **Company_info (1,1)** : une fiche d'informations d'entreprise doit obligatoirement être rattachée à une entreprise existante, elle n'a aucun sens seule.
+
+## Role ↔ User
+
+- **Role (0,N)** : un rôle peut être attribué à zéro (rôle créé mais pas encore utilisé) ou plusieurs utilisateurs.
+- **User (1,1)** : chaque utilisateur doit avoir exactement un rôle, nécessaire pour déterminer ses permissions d'accès dès sa création.
+
+## Company ↔ Vehicule
+
+- **Company (0,N)** : une entreprise peut posséder zéro ou plusieurs véhicules de flotte.
+- **Vehicule (0,1)** : un véhicule peut appartenir à zéro entreprise (véhicule personnel) ou une seule (véhicule de flotte), jamais plusieurs à la fois.
+
+## Company ↔ Invoice
+
+- **Company (0,N)** : une entreprise peut avoir zéro ou plusieurs factures mises à sa charge.
+- **Invoice (0,1)** : une facture peut être payée par zéro entreprise (particulier) ou une seule, jamais partagée entre plusieurs sociétés.
+
+## User ↔ Invoice
+
+- **User (0,N)** : un utilisateur peut avoir zéro (nouveau compte sans consommation) ou plusieurs factures liées à sa consommation.
+- **Invoice (1,1)** : chaque facture doit obligatoirement identifier l'utilisateur ayant consommé, même si c'est l'entreprise qui règle.
+
+## User ↔ Personnal
+
+- **User (0,1)** : un utilisateur peut ne plus avoir de données personnelles si elles ont été supprimées à sa demande (conformité CNIL), sans perdre son historique de facturation.
+- **Personnal (1,1)** : une fiche d'informations personnelles n'existe que rattachée à un utilisateur précis, elle ne peut exister seule.
+
+## Location ↔ Borne
+
+- **Location (0,N)** : un site peut héberger zéro (site prévu mais pas encore équipé) ou plusieurs bornes physiques.
+- **Borne (1,1)** : chaque borne est implantée sur exactement un site, nécessaire pour la localiser sur la carte.
+
+## User ↔ Badge
+
+- **User (0,N)** : un utilisateur peut posséder zéro (compte non encore équipé) ou plusieurs badges (personnel + professionnel).
+- **Badge (1,1)** : chaque badge est détenu par exactement un utilisateur, pour identifier qui recharge à la borne.
+
+## Company ↔ Badge
+
+- **Company (0,N)** : une entreprise peut émettre zéro ou plusieurs badges à distribuer à ses salariés.
+- **Badge (0,1)** : un badge peut être personnel (zéro entreprise) ou émis par une seule entreprise, jamais partagé entre plusieurs sociétés.
+
+## Borne ↔ Charge_Point
+
+- **Borne (1,N)** : une borne physique possède obligatoirement au moins un point de charge, sinon elle ne sert à rien.
+- **Charge_Point (1,1)** : chaque point de charge appartient à exactement une borne, jamais partagé entre plusieurs installations.
+
+## User ↔ Operation
+
+- **User (0,N)** : un technicien peut avoir effectué zéro (nouveau technicien) ou plusieurs opérations de maintenance.
+- **Operation (1,1)** : chaque opération est obligatoirement rattachée à l'opérateur qui l'a réalisée, pour la traçabilité exigée par le client.
+
+## Borne ↔ Operation
+
+- **Borne (0,N)** : une borne peut n'avoir jamais eu de panne (zéro opération) ou en avoir connu plusieurs au fil du temps.
+- **Operation (1,1)** : chaque opération de maintenance concerne exactement une borne précise, jamais plusieurs à la fois.
+
+## Charge_Point ↔ Favorite
+
+- **Charge_Point (0,N)** : un point de charge peut n'être le favori de personne (zéro) ou être mis en favori par plusieurs utilisateurs.
+- **Favorite (1,1)** : chaque entrée de favori désigne exactement un point de charge précis, celui que l'utilisateur veut retrouver facilement.
+
+## User ↔ Favorite
+
+- **User (0,N)** : un utilisateur peut n'avoir aucun favori (zéro) ou en enregistrer plusieurs.
+- **Favorite (1,1)** : chaque favori appartient à exactement un utilisateur, pour ne pas mélanger les préférences entre comptes.
+
+## Badge ↔ Recharge
+
+- **Badge (0,N)** : un badge peut n'avoir jamais servi (zéro recharge, badge tout juste créé) ou avoir été utilisé pour plusieurs recharges.
+- **Recharge (1,1)** : chaque recharge doit obligatoirement être identifiée par le badge utilisé, pour déterminer qui doit payer.
+
+## Charge_Point ↔ Recharge
+
+- **Charge_Point (0,N)** : un point de charge peut n'avoir jamais servi (zéro) ou avoir hébergé plusieurs sessions de recharge au fil du temps.
+- **Recharge (1,1)** : chaque recharge a physiquement lieu sur exactement un point de charge précis.
+
+## Vehicule ↔ Recharge
+
+- **Vehicule (0,N)** : un véhicule enregistré peut n'avoir jamais rechargé chez BorneFlash (zéro) ou avoir été rechargé plusieurs fois.
+- **Recharge (0,1)** : une recharge peut ne référencer aucun véhicule si l'utilisateur ne l'a pas enregistré, ou un seul véhicule précis.
+
+## Invoice ↔ Recharge
+
+- **Invoice (1,N)** : une facture doit obligatoirement regrouper au moins une recharge, sinon elle n'a rien à facturer.
+- **Recharge (0,1)** : une recharge peut ne pas encore être facturée (créée avant l'émission de la facture) ou être rattachée à une seule facture.
+
+## User ↔ Vehicule (via `user_vehicule`)
+
+- **User (0,N)** : un utilisateur peut posséder ou avoir accès à zéro (aucun véhicule enregistré) ou plusieurs véhicules.
+- **Vehicule (0,N)** : un véhicule peut être utilisé par zéro (pas encore associé) ou plusieurs utilisateurs, pour permettre le partage d'un même véhicule.
+
+## User ↔ Company (via `user_company`)
+
+- **User (0,N)** : un utilisateur peut ne travailler pour aucune entreprise (particulier) ou pour plusieurs (intérim, temps partiel).
+- **Company (0,N)** : une entreprise peut n'avoir aucun salarié enregistré (zéro) ou en compter plusieurs.
+
+## Tariff ↔ Rule
+
+- **Tariff (1,N)** : un tarif est obligatoirement associé à une ou plusieurs règles qui définissent ses conditions d'application.
+- **Rule (1,1)** : chaque règle référence exactement un tarif pour déterminer le prix qu'elle applique durant sa période de validité.
+
+## Rule ↔ Zone (via `rule_zone`)
+
+- **Rule (0,N)** : une règle peut s'appliquer à zéro zone si elle cible plutôt une borne spécifique, ou à plusieurs zones à la fois.
+- **Zone (0,N)** : une zone peut n'avoir aucune règle tarifaire spécifique (tarif par défaut) ou en avoir plusieurs (jours différents, horaires différents).
+
+## Rule ↔ Borne (via `borne_rule`)
+
+- **Rule (0,N)** : une règle peut ne cibler aucune borne spécifique si elle s'applique au niveau zone, ou plusieurs bornes précises.
+- **Borne (0,N)** : une borne peut n'avoir aucune règle tarifaire dédiée (elle suit alors sa zone) ou en avoir plusieurs pour des créneaux différents.
+
+## Location ↔ Tag (via `location_tag`)
+
+- **Location (0,N)** : un site peut n'avoir aucun service à proximité (zéro tag) ou en cumuler plusieurs (café, toilettes, parking couvert).
+- **Tag (0,N)** : un même tag (ex : "Café") peut être associé à zéro ou plusieurs sites différents.
+
+## Role ↔ Permission (via `role_permission`)
+
+- **Role (0,N)** : un rôle peut n'avoir aucune permission attribuée pour l'instant (zéro), ou en cumuler plusieurs.
+- **Permission (0,N)** : une même permission peut être accordée à zéro ou plusieurs rôles différents (ex : `view_invoice` pour "Comptable" et "Admin").

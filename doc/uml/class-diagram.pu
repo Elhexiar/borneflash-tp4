@@ -1,0 +1,94 @@
+@startuml
+
+
+package "Utilisateurs et entreprises" {
+	class User
+	class Personnal
+	class Role
+	class Permission
+	class Company
+	class CompanyInfo
+	class Vehicule
+	class Badge
+}
+
+package "Infrastructure" {
+	class Zone
+	class Location
+	class Tag
+	class Borne
+	class ChargePoint
+}
+
+package "Recharge et facturation" {
+	class Recharge
+	class Invoice
+	class Favorite
+}
+
+package "Tarification" {
+	class Tariff
+	class Rule
+}
+
+package "Maintenance" {
+	class Operation
+}
+
+package "Notification" {
+	interface ObservateurRecharge
+	class JournalConsole
+	class JournalFichier
+	class MiseAJourTableauDeBord
+	class RecuEmail
+}
+
+package "Persistance" {
+	interface RechargeRepository
+	class RechargeRepositoryEnMemoire
+	class RechargeRepositoryPostgreSQL
+}
+
+Zone "1" -- "0..*" Location
+Location "1" -- "0..*" Borne
+Location "0..*" -- "0..*" Tag : location_tag
+Borne "1" -- "1..*" ChargePoint
+
+Role "1" -- "0..*" User
+User "1" -- "0..1" Personnal
+User "0..*" -- "0..*" Company : user_company
+Company "1" -- "0..1" CompanyInfo
+Company "0..1" -- "0..*" Vehicule
+User "0..*" -- "0..*" Vehicule : user_vehicule
+User "1" -- "0..*" Badge
+Company "0..1" -- "0..*" Badge
+Role "0..*" -left- "0..*" Permission : role_permission
+
+Badge "1" -- "0..*" Recharge
+ChargePoint "1" -- "0..*" Recharge
+Vehicule "0..1" -- "0..*" Recharge
+Invoice "0..1" -- "1..*" Recharge
+User "1" -- "0..*" Invoice
+Company "0..1" -- "0..*" Invoice
+User "1" -- "0..*" Favorite
+ChargePoint "1" -- "0..*" Favorite
+
+Recharge --> ObservateurRecharge
+RechargeRepository --> Recharge
+
+Tariff "1..*" -- "1" Rule
+Rule "0..*" -- "0..*" Zone : rule_zone
+Rule "0..*" -- "0..*" Borne : borne_rule
+
+User "1" -- "0..*" Operation
+Borne "1" -- "0..*" Operation
+
+JournalConsole ..|> ObservateurRecharge
+JournalFichier ..|> ObservateurRecharge
+MiseAJourTableauDeBord ..|> ObservateurRecharge
+RecuEmail ..|> ObservateurRecharge
+
+RechargeRepositoryEnMemoire ..|> RechargeRepository
+RechargeRepositoryPostgreSQL ..|> RechargeRepository
+
+@enduml
