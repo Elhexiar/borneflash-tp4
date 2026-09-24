@@ -64,8 +64,9 @@ User "1" -- "0..*" Badge
 Company "0..1" -- "0..*" Badge
 Role "0..*" -left- "0..*" Permission : role_permission
 
-Badge "1" -- "0..*" Recharge
+Badge "0..1" -- "0..*" Recharge
 ChargePoint "1" -- "0..*" Recharge
+User "1" -- "0..*" Recharge
 Vehicule "0..1" -- "0..*" Recharge
 Invoice "0..1" -- "1..*" Recharge
 User "1" -- "0..*" Invoice

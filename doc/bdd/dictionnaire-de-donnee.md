@@ -2,28 +2,28 @@
 
 ## Utilisateur : `user_`
 
-| Code               | Désignation                                                     | Type     | Taille | Contrainte                    | MCD | MLD |
-| ------------------ | --------------------------------------------------------------- | -------- | ------ | ----------------------------- | --- | --- |
-| id_user            | Identifiant utilisateur                                         | Alphanum | 255    | Obligatoire, Unique, Auto     | X   |     |
-| date_register_user | Date d'inscription de l'utilisateur                             | Date     | ---    | Obligatoire, défaut : ce jour | X   |     |
-| date_deleted_user  | Date de suppression de l'utilisateur (user supprimé si non nul) | Date     | ---    |                               | X   |     |
-| id_role            | Référence du rôle de l'utilisateur (FK vers `Role`)             | Alphanum | 255    | Obligatoire                   | X   |     |
+| Code               | Désignation                                                     | Type     | Taille | Contrainte                    | Métier | Applicatif | Technique |
+| ------------------ | --------------------------------------------------------------- | -------- | ------ | ----------------------------- | ------ | ---------- | --------- |
+| id_user            | Identifiant utilisateur                                         | Alphanum | 255    | Obligatoire, Unique, Auto     |        |            | X         |
+| date_register_user | Date d'inscription de l'utilisateur                             | Date     | ---    | Obligatoire, défaut : ce jour |        | X          |           |
+| date_deleted_user  | Date de suppression de l'utilisateur (user supprimé si non nul) | Date     | ---    |                               |        | X          |           |
+| id_role            | Référence du rôle de l'utilisateur (FK vers `Role`)             | Alphanum | 255    | Obligatoire                   |        |            | X         |
 
 ---
 
 ## Information Personnelles : `personnal`
 
-| Code             | Désignation                                    |   Type   | Taille | Contrainte          | MCD | MLD |
-| ---------------- | ---------------------------------------------- | :------: | :----: | ------------------- | --- | --- |
-| id_personnal     | Identifiant information personnelles           | Alphanum |  255   | Obligatoire, Unique | X   |     |
-| id_user          | Identifiant utilisateur (FK, relation 1-1)     | Alphanum |  255   | Obligatoire         | X   |     |
-| first_name       | Prénom utilisateur                             | Alphanum |  255   | Obligatoire         | X   |     |
-| last_name        | Nom de famille utilisateur                     | Alphanum |  255   | Obligatoire         | X   |     |
-| password_user    | Mot de passe de l'utilisateur (haché)          | Alphanum |  255   | Obligatoire         | X   |     |
-| email_user       | Email utilisateur, identifiant de connexion    | Alphanum |  255   | Obligatoire, Unique | X   | X   |
-| postal_adress    | Adresse postale de l'utilisateur               | Alphanum |  255   |                     | X   |     |
-| invoice_adress   | Adresse de facturation de l'utilisateur        | Alphanum |  255   |                     | X   |     |
-| date_consent_tos | Date d'acceptation des CGU / consentement RGPD |   Date   |  ---   |                     | X   |     |
+| Code             | Désignation                                    |   Type   | Taille | Contrainte          | Métier | Applicatif | Technique |
+| ---------------- | ---------------------------------------------- | :------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_personnal     | Identifiant information personnelles           | Alphanum |  255   | Obligatoire, Unique |        |            | X         |
+| id_user          | Identifiant utilisateur (FK, relation 1-1)     | Alphanum |  255   | Obligatoire         |        |            | X         |
+| first_name       | Prénom utilisateur                             | Alphanum |  255   | Obligatoire         | X      |            |           |
+| last_name        | Nom de famille utilisateur                     | Alphanum |  255   | Obligatoire         | X      |            |           |
+| password_user    | Mot de passe de l'utilisateur (haché)          | Alphanum |  255   | Obligatoire         |        | X          |           |
+| email_user       | Email utilisateur, identifiant de connexion    | Alphanum |  255   | Obligatoire, Unique |        | X          |           |
+| postal_adress    | Adresse postale de l'utilisateur               | Alphanum |  255   |                     | X      |            |           |
+| invoice_adress   | Adresse de facturation de l'utilisateur        | Alphanum |  255   |                     | X      |            |           |
+| date_consent_tos | Date d'acceptation des CGU / consentement RGPD |   Date   |  ---   |                     |        | X          |           |
 
 > Table séparée de `User` pour permettre la suppression réelle des données personnelles (RGPD/CNIL) sans casser l'intégrité des factures/recharges historiques rattachées à `id_user`.
 > Le champ `date_consent_tos` permet de prouver l'acceptation des CGU et le consentement au traitement des données, conformément aux exigences de la CNIL.
@@ -32,15 +32,15 @@
 
 ## Information Entreprise : `company_info`
 
-| Code                     | Désignation                                          |   Type   | Taille | Contrainte          | MCD | MLD |
-| ------------------------ | ---------------------------------------------------- | :------: | :----: | ------------------- | --- | --- |
-| id_company_info          | Identifiant des informations d'entreprise            | Alphanum |  255   | Obligatoire, Unique | X   |     |
-| id_company               | Identifiant de l'entreprise (FK, relation 1-1)       | Alphanum |  255   | Obligatoire         | X   |     |
-| name_company             | Nom de l'entreprise                                  | Alphanum |  255   | Obligatoire, Unique | X   |     |
-| accounting_email_company | Email comptable de l'entreprise (réception factures) | Alphanum |  255   |                     | X   |     |
-| contact_email_company    | Email de contact de l'entreprise (incidents)         | Alphanum |  255   |                     | X   |     |
-| postal_adress            | Adresse postale de l'entreprise                      | Alphanum |  255   |                     | X   |     |
-| invoice_adress           | Adresse de facturation de l'entreprise               | Alphanum |  255   |                     | X   |     |
+| Code                     | Désignation                                          |   Type   | Taille | Contrainte          | Métier | Applicatif | Technique |
+| ------------------------ | ---------------------------------------------------- | :------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_company_info          | Identifiant des informations d'entreprise            | Alphanum |  255   | Obligatoire, Unique |        |            | X         |
+| id_company               | Identifiant de l'entreprise (FK, relation 1-1)       | Alphanum |  255   | Obligatoire         |        |            | X         |
+| name_company             | Nom de l'entreprise                                  | Alphanum |  255   | Obligatoire, Unique | X      |            |           |
+| accounting_email_company | Email comptable de l'entreprise (réception factures) | Alphanum |  255   |                     | X      |            |           |
+| contact_email_company    | Email de contact de l'entreprise (incidents)         | Alphanum |  255   |                     |        | X          |           |
+| postal_adress            | Adresse postale de l'entreprise                      | Alphanum |  255   |                     | X      |            |           |
+| invoice_adress           | Adresse de facturation de l'entreprise               | Alphanum |  255   |                     | X      |            |           |
 
 > Table séparée de `Company` pour les mêmes raisons que `Personnal` / `User` : permettre la suppression des données personnelles de l'entreprise sans casser l'intégrité des factures historiques.
 
@@ -48,20 +48,20 @@
 
 ## Rôle : `role`
 
-| Code      | Désignation                                                         |   Type   | Taille | Contrainte          | MCD | MLD |
-| --------- | ------------------------------------------------------------------- | :------: | :----: | ------------------- | --- | --- |
-| id_role   | Identifiant du rôle                                                 | Alphanum |  255   | Obligatoire, Unique |     |     |
-| name_role | Nom du rôle (ex : "Conducteur", "Admin", "Comptable", "Technicien") | Alphanum |  255   | Obligatoire         |     |     |
+| Code      | Désignation                                                         |   Type   | Taille | Contrainte          | Métier | Applicatif | Technique |
+| --------- | ------------------------------------------------------------------- | :------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_role   | Identifiant du rôle                                                 | Alphanum |  255   | Obligatoire, Unique |        |            | X         |
+| name_role | Nom du rôle (ex : "Conducteur", "Admin", "Comptable", "Technicien") | Alphanum |  255   | Obligatoire         | X      |            |           |
 
 ---
 
 ## Permission : `permission`
 
-| Code            | Désignation                                                 |   Type   | Taille | Contrainte          | MCD | MLD |
-| --------------- | ----------------------------------------------------------- | :------: | :----: | ------------------- | --- | --- |
-| id_permission   | Identifiant de la permission                                | Alphanum |  255   | Obligatoire, Unique |     |     |
-| code_permission | Code technique de la permission (utilisé par l'application) | Alphanum |  255   | Obligatoire, Unique |     |     |
-| description     | Description lisible de ce que permet cette permission       | Alphanum |  255   |                     |     |     |
+| Code            | Désignation                                                 |   Type   | Taille | Contrainte          | Métier | Applicatif | Technique |
+| --------------- | ----------------------------------------------------------- | :------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_permission   | Identifiant de la permission                                | Alphanum |  255   | Obligatoire, Unique |        |            | X         |
+| code_permission | Code technique de la permission (utilisé par l'application) | Alphanum |  255   | Obligatoire, Unique |        | X          |           |
+| description     | Description lisible de ce que permet cette permission       | Alphanum |  255   |                     |        | X          |           |
 
 > Chaque rôle se voit attribuer un ensemble de permissions via l'association `Associer_un_role_a_des_permission`. L'application vérifie les droits d'un utilisateur en remontant `User → Role → Permission`, plutôt que de coder les règles d'accès en dur.
 
@@ -95,11 +95,11 @@
 
 ## Entreprise : `company`
 
-| Code         | Désignation              |   Type   | Taille | Contrainte          | MCD | MLD |
-| ------------ | ------------------------ | :------: | :----: | ------------------- | --- | --- |
-| id_company   | Identifiant d'entreprise | Alphanum |  255   | Obligatoire, Unique |     |     |
-| date_created | Date de création         |   Date   |  ---   | Obligatoire         |     |     |
-| date_deleted | Date de suppression      |   Date   |  ---   |                     |     |     |
+| Code         | Désignation              |   Type   | Taille | Contrainte          | Métier | Applicatif | Technique |
+| ------------ | ------------------------ | :------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_company   | Identifiant d'entreprise | Alphanum |  255   | Obligatoire, Unique |        |            | X         |
+| date_created | Date de création         |   Date   |  ---   | Obligatoire         |        | X          |           |
+| date_deleted | Date de suppression      |   Date   |  ---   |                     |        | X          |           |
 
 > `date_deleted` permet la suppression logique (soft delete) de l'entreprise. Les informations personnelles sont dans `company_info`.
 
@@ -107,10 +107,10 @@
 
 ## Zone Géographique : `zone`
 
-| Code      | Désignation                 |   Type   | Taille | Contrainte          | MCD | MLD |
-| --------- | --------------------------- | :------: | :----: | ------------------- | --- | --- |
-| id_zone   | Identifiant de la zone      | Alphanum |  255   | Obligatoire, Unique |     |     |
-| name_zone | Nom de la zone géographique | Alphanum |  255   | Obligatoire, Unique |     |     |
+| Code      | Désignation                 |   Type   | Taille | Contrainte          | Métier | Applicatif | Technique |
+| --------- | --------------------------- | :------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_zone   | Identifiant de la zone      | Alphanum |  255   | Obligatoire, Unique |        |            | X         |
+| name_zone | Nom de la zone géographique | Alphanum |  255   | Obligatoire, Unique | X      |            |           |
 
 > Une zone peut être une région, un département, ou toute subdivision géographique. Le modèle peut évoluer vers une zone auto-référencée (`id_zone_parent`) pour gérer des hiérarchies.
 
@@ -118,12 +118,13 @@
 
 ## Site / Localisation : `location`
 
-| Code        | Désignation                                                   |          Type           | Taille | Contrainte          | MCD | MLD |
-| ----------- | ------------------------------------------------------------- | :---------------------: | :----: | ------------------- | --- | --- |
-| id_location | Identifiant du site                                           |        Alphanum         |  255   | Obligatoire, Unique |     |     |
-| latitude    | Latitude approximative du site (recherche / affichage carte)  | Numérique (Decimal 9,6) |  ---   | Obligatoire         |     |     |
-| longitude   | Longitude approximative du site (recherche / affichage carte) | Numérique (Decimal 9,6) |  ---   | Obligatoire         |     |     |
-| id_zone     | Référence de la zone géographique                             |        Alphanum         |  255   |                     |     |     |
+| Code          | Désignation                                                   |          Type           | Taille | Contrainte          | Métier | Applicatif | Technique |
+| ------------- | ------------------------------------------------------------- | :---------------------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_location   | Identifiant du site                                           |        Alphanum         |  255   | Obligatoire, Unique |        |            | X         |
+| name_location | Nom du site (ex : "Parking de la Gare")                       |        Alphanum         |  255   | Obligatoire         | X      |            |           |
+| latitude      | Latitude approximative du site (recherche / affichage carte)  | Numérique (Decimal 9,6) |  ---   | Obligatoire         | X      |            |           |
+| longitude     | Longitude approximative du site (recherche / affichage carte) | Numérique (Decimal 9,6) |  ---   | Obligatoire         | X      |            |           |
+| id_zone       | Référence de la zone géographique                             |        Alphanum         |  255   |                     |        |            | X         |
 
 > Représente un site (ex : parking) pouvant héberger une ou plusieurs bornes. Coordonnées volontairement moins précises que celles de `Borne` — utilisées pour la recherche/carte grand public (type Google Maps).
 
@@ -131,11 +132,11 @@
 
 ## Tag de site : `tag`
 
-| Code     | Désignation                                                                                    |   Type   | Taille | Contrainte          | MCD | MLD |
-| -------- | ---------------------------------------------------------------------------------------------- | :------: | :----: | ------------------- | --- | --- |
-| id_tag   | Identifiant du tag de service                                                                  | Alphanum |  255   | Obligatoire, Unique |     |     |
-| tag_name | Nom du service/équipement disponible sur le site (ex : "Café", "Toilettes", "Parking couvert") | Alphanum |   50   | Obligatoire         |     |     |
-| tag_icon | Icône représentant le tag (emoji ou nom d'icône)                                               | Alphanum |   50   |                     |     |     |
+| Code     | Désignation                                                                                    |   Type   | Taille | Contrainte          | Métier | Applicatif | Technique |
+| -------- | ---------------------------------------------------------------------------------------------- | :------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_tag   | Identifiant du tag de service                                                                  | Alphanum |  255   | Obligatoire, Unique |        |            | X         |
+| tag_name | Nom du service/équipement disponible sur le site (ex : "Café", "Toilettes", "Parking couvert") | Alphanum |   50   | Obligatoire         |        | X          |           |
+| tag_icon | Icône représentant le tag (emoji ou nom d'icône)                                               | Alphanum |   50   |                     |        |            | X         |
 
 > Permet de décrire les services/équipements présents autour d'un site (`Location`), via l'association `Identifier_les_services_autours_d_un_site`.
 
@@ -143,13 +144,13 @@
 
 ## Borne : `borne`
 
-| Code        | Désignation                                                                                                |          Type           | Taille | Contrainte          | MCD | MLD |
-| ----------- | ---------------------------------------------------------------------------------------------------------- | :---------------------: | :----: | ------------------- | --- | --- |
-| id_borne    | Identificateur borne                                                                                       |        Alphanum         |  255   | Obligatoire, Unique |     |     |
-| id_location | Référence du site auquel appartient la borne                                                               |        Alphanum         |  255   | Obligatoire         |     |     |
-| latitude    | Latitude précise de la borne                                                                               | Numérique (Decimal 9,6) |  ---   | Obligatoire         |     |     |
-| longitude   | Longitude précise de la borne                                                                              | Numérique (Decimal 9,6) |  ---   | Obligatoire         |     |     |
-| state       | État de la borne (ex : 0 -> Désactivée, 1 -> Active en bon état, 2 -> Active avec dysfonctionnement, etc.) |         Entier          |  ---   | Obligatoire         |     |     |
+| Code        | Désignation                                                                                                |          Type           | Taille | Contrainte          | Métier | Applicatif | Technique |
+| ----------- | ---------------------------------------------------------------------------------------------------------- | :---------------------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_borne    | Identificateur borne                                                                                       |        Alphanum         |  255   | Obligatoire, Unique |        |            | X         |
+| id_location | Référence du site auquel appartient la borne                                                               |        Alphanum         |  255   | Obligatoire         |        |            | X         |
+| latitude    | Latitude précise de la borne                                                                               | Numérique (Decimal 9,6) |  ---   | Obligatoire         | X      |            |           |
+| longitude   | Longitude précise de la borne                                                                              | Numérique (Decimal 9,6) |  ---   | Obligatoire         | X      |            |           |
+| state       | État de la borne (ex : 0 -> Désactivée, 1 -> Active en bon état, 2 -> Active avec dysfonctionnement, etc.) |         Entier          |  ---   | Obligatoire         |        |            | X         |
 
 > Une borne peut posséder plusieurs points de charge (`Charge_Point`). Par décision client, si un seul point de charge dysfonctionne, la borne entière est marquée dysfonctionnelle via `state`, afin d'éviter toute ambiguïté pour l'utilisateur.
 
@@ -157,12 +158,12 @@
 
 ## Point de charge : `charge_point`
 
-| Code                   | Désignation                                               |   Type    | Taille | Contrainte          | MCD | MLD |
-| ---------------------- | --------------------------------------------------------- | :-------: | :----: | ------------------- | --- | --- |
-| id_charge_point        | Identifiant du point de charge                            | Alphanum  |  255   | Obligatoire, Unique |     |     |
-| id_borne               | Référence de la borne parente                             | Alphanum  |  255   | Obligatoire         |     |     |
-| available_charge_point | Disponibilité immédiate du point de charge (occupé/libre) |  Booléen  |  ---   | Obligatoire         |     |     |
-| power_charge_point     | Puissance en kW du point de charge                        | Numérique |   10   | Obligatoire         |     |     |
+| Code                   | Désignation                                               |   Type    | Taille | Contrainte          | Métier | Applicatif | Technique |
+| ---------------------- | --------------------------------------------------------- | :-------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_charge_point        | Identifiant du point de charge                            | Alphanum  |  255   | Obligatoire, Unique |        |            | X         |
+| id_borne               | Référence de la borne parente                             | Alphanum  |  255   | Obligatoire         |        |            | X         |
+| available_charge_point | Disponibilité immédiate du point de charge (occupé/libre) |  Booléen  |  ---   | Obligatoire         |        | X          |           |
+| power_charge_point     | Puissance en kW du point de charge                        | Numérique |   10   | Obligatoire         | X      |            |           |
 
 > `available_charge_point` reflète l'occupation en temps réel (charge en cours ou non), indépendamment de l'état de fonctionnement porté par `Borne.state`.
 
@@ -170,12 +171,12 @@
 
 ## Véhicule : `vehicule`
 
-| Code           | Désignation                                             |   Type   | Taille | Contrainte          | MCD | MLD |
-| -------------- | ------------------------------------------------------- | :------: | :----: | ------------------- | --- | --- |
-| id_vehicule    | Identifiant véhicule                                    | Alphanum |  255   | Obligatoire, Unique |     |     |
-| id_company     | Identifiant optionnel d'entreprise (véhicule de flotte) | Alphanum |  255   |                     |     |     |
-| model_vehicule | Modèle de véhicule                                      | Alphanum |  255   | Obligatoire         |     |     |
-| active         | Le véhicule est-il actif/valide dans le système         | Booléen  |  ---   | Obligatoire         |     |     |
+| Code           | Désignation                                             |   Type   | Taille | Contrainte          | Métier | Applicatif | Technique |
+| -------------- | ------------------------------------------------------- | :------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_vehicule    | Identifiant véhicule                                    | Alphanum |  255   | Obligatoire, Unique |        |            | X         |
+| id_company     | Identifiant optionnel d'entreprise (véhicule de flotte) | Alphanum |  255   |                     |        |            | X         |
+| model_vehicule | Modèle de véhicule                                      | Alphanum |  255   | Obligatoire         | X      |            |           |
+| active         | Le véhicule est-il actif/valide dans le système         | Booléen  |  ---   | Obligatoire         |        | X          |           |
 
 > Un véhicule peut avoir plusieurs utilisateurs, ex : véhicule partagé ; voir `Associer_un_vehicule_a_un_l_utilisateur`. Un véhicule peut être personnel (id_company NULL) ou appartenir à une flotte d'entreprise.
 
@@ -183,54 +184,55 @@
 
 ## Badge : `badge`
 
-| Code       | Désignation                                                             |   Type   | Taille | Contrainte          | MCD | MLD |
-| ---------- | ----------------------------------------------------------------------- | :------: | :----: | ------------------- | --- | --- |
-| id_badge   | Identifiant du badge                                                    | Alphanum |  255   | Obligatoire, Unique |     |     |
-| id_user    | Identifiant de l'utilisateur détenteur du badge                         | Alphanum |  255   | Obligatoire         |     |     |
-| id_company | Identifiant de l'entreprise ayant émis le badge (si badge d'entreprise) | Alphanum |  255   |                     |     |     |
-| badge_code | Code physique du badge (ex : numéro RFID)                               | Alphanum |   14   | Obligatoire         |     |     |
-| active     | Le badge est-il actif (permet la désactivation sans suppression)        | Booléen  |  ---   | Obligatoire         |     |     |
+| Code       | Désignation                                                               |   Type   | Taille | Contrainte          | Métier | Applicatif | Technique |
+| ---------- | ------------------------------------------------------------------------- | :------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_badge   | Identifiant du badge                                                      | Alphanum |  255   | Obligatoire, Unique |        |            | X         |
+| id_user    | Identifiant de l'utilisateur détenteur du badge                           | Alphanum |  255   | Obligatoire         |        |            | X         |
+| id_company | Identifiant de l'entreprise ayant émis le badge (si badge d'entreprise)   | Alphanum |  255   |                     |        |            | X         |
+| badge_code | Code physique du badge (ex : numéro RFID), réutilisable après restitution | Alphanum |   14   | Obligatoire         | X      |            |           |
+| active     | Le badge est-il actif (permet la désactivation sans suppression)          | Booléen  |  ---   | Obligatoire         |        | X          |           |
 
-> Un badge personnel a `id_company` vide (facturé à l'utilisateur). Un badge d'entreprise a `id_company` rempli (facturé à l'entreprise). Un même badge n'appartient qu'à une seule entreprise à la fois.
+> Un badge personnel a `id_company` vide (facturé à l'utilisateur). Un badge d'entreprise a `id_company` rempli (facturé à l'entreprise). Un même badge n'appartient qu'à une seule entreprise à la fois. Lorsqu'un badge est restitué puis attribué à un autre utilisateur, une nouvelle ligne `badge` est créée avec le même `badge_code` et l'ancienne ligne est désactivée (`active = false`) afin de conserver l'historique.
 
 ---
 
 ## Recharge : `recharge`
 
-| Code                | Désignation                                                      |   Type    | Taille | Contrainte          | MCD | MLD |
-| ------------------- | ---------------------------------------------------------------- | :-------: | :----: | ------------------- | --- | --- |
-| id_recharge         | Identifiant de recharge                                          | Alphanum  |  255   | Obligatoire, Unique |     |     |
-| id_badge            | Identifiant du badge utilisé pour identifier l'utilisateur       | Alphanum  |  255   | Obligatoire         |     |     |
-| id_charge_point     | Identifiant du point de charge utilisé                           | Alphanum  |  255   | Obligatoire         |     |     |
-| id_vehicule         | Identifiant du véhicule concerné, si renseigné par l'utilisateur | Alphanum  |  255   |                     |     |     |
-| id_invoice          | Identifiant de la facture associée, une fois émise               | Alphanum  |  255   |                     |     |     |
-| recharge_quantity   | Quantité de kWh transférée lors de la recharge                   | Numérique |   10   | Obligatoire         |     |     |
-| recharge_state      | État de la recharge (0 = EN_COURS, 1 = TERMINEE, etc.)           |  Entier   |  ---   | Obligatoire         |     |     |
-| date_recharge_begin | Date de début de la recharge                                     |   Date    |  ---   | Obligatoire         |     |     |
-| date_recharge_end   | Date de fin de la recharge (nulle tant qu'en cours)              |   Date    |  ---   |                     |     |     |
-| price_recharge      | Prix de la recharge une fois terminée                            | Monétaire |  ---   | Obligatoire         |     |     |
+| Code                | Désignation                                                       |   Type    | Taille | Contrainte          | Métier | Applicatif | Technique |
+| ------------------- | ----------------------------------------------------------------- | :-------: | :----: | ------------------- | ------ | ---------- | --------- |
+| id_recharge         | Identifiant de recharge                                           | Alphanum  |  255   | Obligatoire, Unique |        |            | X         |
+| id_badge            | Identifiant du badge utilisé pour initier la recharge, si présent | Alphanum  |  255   |                     |        |            | X         |
+| id_charge_point     | Identifiant du point de charge utilisé                            | Alphanum  |  255   | Obligatoire         |        |            | X         |
+| id_user             | Identifiant de l'utilisateur ayant initié la recharge             | Alphanum  |  255   | Obligatoire         |        |            | X         |
+| id_vehicule         | Identifiant du véhicule concerné, si renseigné par l'utilisateur  | Alphanum  |  255   |                     |        |            | X         |
+| id_invoice          | Identifiant de la facture associée, une fois émise                | Alphanum  |  255   |                     |        |            | X         |
+| recharge_quantity   | Quantité de kWh transférée lors de la recharge                    | Numérique |   10   | Obligatoire         | X      |            |           |
+| recharge_state      | État de la recharge (0 = EN_COURS, 1 = TERMINEE, etc.)            |  Entier   |  ---   | Obligatoire         | X      |            |           |
+| date_recharge_begin | Date de début de la recharge                                      |   Date    |  ---   | Obligatoire         | X      |            |           |
+| date_recharge_end   | Date de fin de la recharge (nulle tant qu'en cours)               |   Date    |  ---   |                     | X      |            |           |
+| price_recharge      | Prix de la recharge une fois terminée                             | Monétaire |  ---   | Obligatoire         | X      |            |           |
 
-> L'identité de l'utilisateur (et donc le payeur) se déduit via `id_badge → User [→ Company]`, il n'y a plus de FK directe vers `User`. `id_vehicule` est optionnel : rien n'oblige un utilisateur à enregistrer son véhicule. `id_invoice` est optionnel : une recharge existe avant d'être facturée.
+> `id_user` identifie toujours l'utilisateur ayant initié la recharge, qu'elle ait été lancée depuis l'application ou avec un badge. `id_badge` est optionnel : il est renseigné uniquement lorsqu'un badge est utilisé. `id_vehicule` est optionnel : rien n'oblige un utilisateur à enregistrer son véhicule. `id_invoice` est optionnel : une recharge existe avant d'être facturée.
 > `recharge_state` remplace `finished_recharge` pour gérer plusieurs états (EN_COURS, TERMINEE, ANNULEE, ECHEC).
 
 ---
 
 ## Facture : `invoice`
 
-| Code                 | Désignation                                               |   Type    | Taille | Contrainte                    | MCD | MLD |
-| -------------------- | --------------------------------------------------------- | :-------: | :----: | ----------------------------- | --- | --- |
-| id_invoice           | Identifiant facture                                       | Alphanum  |  255   | Obligatoire, Unique           |     |     |
-| code_invoice         | Numéro de facture lisible (affiché au client)             | Alphanum  |   50   | Obligatoire                   |     |     |
-| id_user              | Identifiant utilisateur ayant consommé                    | Alphanum  |  255   | Obligatoire                   |     |     |
-| id_company           | Identifiant de l'entreprise, si non nul l'entreprise paye | Alphanum  |  255   |                               |     |     |
-| amount_energie       | Montant de l'énergie délivrée                             | Numérique |   10   | Obligatoire                   |     |     |
-| tarrif_price_applied | Prix du kWh appliqué au moment de la facturation          | Monétaire |  ---   | Obligatoire                   |     |     |
-| tax_included_cost    | Montant TTC de la facture                                 | Monétaire |  ---   | Obligatoire                   |     |     |
-| tax_amount           | Montant de la TVA                                         | Monétaire |  ---   | Obligatoire                   |     |     |
-| tax_excluded_cost    | Montant HT de la facture                                  | Monétaire |  ---   | Obligatoire                   |     |     |
-| is_paid_invoice      | La facture a-t-elle été réglée                            |  Booléen  |  ---   | Obligatoire, défaut = false   |     |     |
-| date_emited_invoice  | Date d'émission de la facture                             |   Date    |  ---   | Obligatoire, défaut = ce jour |     |     |
-| date_paid_invoice    | Date de paiement de la facture                            |   Date    |  ---   |                               |     |     |
+| Code                 | Désignation                                               |   Type    | Taille | Contrainte                    | Métier | Applicatif | Technique |
+| -------------------- | --------------------------------------------------------- | :-------: | :----: | ----------------------------- | ------ | ---------- | --------- |
+| id_invoice           | Identifiant facture                                       | Alphanum  |  255   | Obligatoire, Unique           |        |            | X         |
+| code_invoice         | Numéro de facture lisible (affiché au client)             | Alphanum  |   50   | Obligatoire                   | X      |            |           |
+| id_user              | Identifiant utilisateur ayant consommé                    | Alphanum  |  255   | Obligatoire                   |        |            | X         |
+| id_company           | Identifiant de l'entreprise, si non nul l'entreprise paye | Alphanum  |  255   |                               |        |            | X         |
+| amount_energie       | Montant de l'énergie délivrée                             | Numérique |   10   | Obligatoire                   | X      |            |           |
+| tarrif_price_applied | Prix du kWh appliqué au moment de la facturation          | Monétaire |  ---   | Obligatoire                   | X      |            |           |
+| tax_included_cost    | Montant TTC de la facture                                 | Monétaire |  ---   | Obligatoire                   | X      |            |           |
+| tax_amount           | Montant de la TVA                                         | Monétaire |  ---   | Obligatoire                   | X      |            |           |
+| tax_excluded_cost    | Montant HT de la facture                                  | Monétaire |  ---   | Obligatoire                   | X      |            |           |
+| is_paid_invoice      | La facture a-t-elle été réglée                            |  Booléen  |  ---   | Obligatoire, défaut = false   |        | X          |           |
+| date_emited_invoice  | Date d'émission de la facture                             |   Date    |  ---   | Obligatoire, défaut = ce jour | X      |            |           |
+| date_paid_invoice    | Date de paiement de la facture                            |   Date    |  ---   |                               | X      |            |           |
 
 > `id_user` identifie toujours qui a consommé ; `id_company` (optionnel) identifie qui paye lorsqu'il s'agit d'une facturation groupée à une entreprise. Une facture peut regrouper plusieurs recharges via `Recharge.id_invoice`.
 > Les montants (`tarrif_price_applied`, `tax_*`) sont **figés** au moment de l'émission pour garantir la justesse des factures historiques.
@@ -239,26 +241,26 @@
 
 ## Tariff : `tariff`
 
-| Code         | Désignation             | Type      | Taille | Contrainte          | MCD | MLD |
-| ------------ | ----------------------- | --------- | :----: | ------------------- | --- | --- |
-| id_tariff    | Identifiant tariff      | Alphanum  |  255   | Obligatoire, Unique |     |     |
-| name_tariff  | Nom de ce type de tarif | Alphanum  |  255   | Obligatoire         |     |     |
-| price_tariff | Prix au kWh appliqué    | Numérique |   10   | Obligatoire         |     |     |
+| Code         | Désignation             | Type      | Taille | Contrainte          | Métier | Applicatif | Technique |
+| ------------ | ----------------------- | --------- | :----: | ------------------- | ------ | ---------- | --------- |
+| id_tariff    | Identifiant tariff      | Alphanum  |  255   | Obligatoire, Unique |        |            | X         |
+| name_tariff  | Nom de ce type de tarif | Alphanum  |  255   | Obligatoire         | X      |            |           |
+| price_tariff | Prix au kWh appliqué    | Numérique |   10   | Obligatoire         | X      |            |           |
 
 ---
 
 ## Règles de Tarifs : `rule`
 
-| Code        | Désignation                                                                                    | Type               | Taille | Contrainte          | MCD | MLD |
-| ----------- | ---------------------------------------------------------------------------------------------- | ------------------ | :----: | ------------------- | --- | --- |
-| id_rule     | Identifiant de la règle de tarif                                                               | Alphanum           |  255   | Obligatoire, Unique |     |     |
-| id_tariff   | Référence du tarif appliqué par la règle (FK vers `Tariff`)                                    | Alphanum           |  255   | Obligatoire         |     |     |
-| day_of_week | Jour de la semaine récurrent, notation US (0 = Dimanche, 6 = Samedi). Nul = tous les jours     | Numérique - Entier |   1    |                     |     |     |
-| time_start  | Heure de début d'application. Nul = pas de restriction horaire                                 | Date - Heure       |   8    |                     |     |     |
-| time_end    | Heure de fin d'application. Nul = pas de restriction horaire                                   | Date - Heure       |   8    |                     |     |     |
-| valid_from  | Date de début d'application. Nul = pas de restriction de date                                  | Date - Jour        |   8    |                     |     |     |
-| valid_to    | Date de fin d'application. Nul = pas de restriction de date                                    | Date - Jour        |   8    |                     |     |     |
-| priority    | Priorité de la règle en cas d'application simultanée de plusieurs règles (la plus haute gagne) | Numérique          |   3    |                     |     |     |
+| Code        | Désignation                                                                                                 | Type         | Taille | Contrainte                 | Métier | Applicatif | Technique |
+| ----------- | ----------------------------------------------------------------------------------------------------------- | ------------ | :----: | -------------------------- | ------ | ---------- | --------- |
+| id_rule     | Identifiant de la règle de tarif                                                                            | Alphanum     |  255   | Obligatoire, Unique        |        |            | X         |
+| id_tariff   | Référence du tarif appliqué par la règle (FK vers `Tariff`)                                                 | Alphanum     |  255   | Obligatoire                |        |            | X         |
+| day_of_week | Jours de la semaine récurrents, masque binaire de lundi à dimanche (`1` = applicable). Nul = tous les jours | Alphanum     |   7    | Sept caractères `0` ou `1` | X      |            |           |
+| time_start  | Heure de début d'application. Nul = pas de restriction horaire                                              | Date - Heure |   8    |                            | X      |            |           |
+| time_end    | Heure de fin d'application. Nul = pas de restriction horaire                                                | Date - Heure |   8    |                            | X      |            |           |
+| valid_from  | Date de début d'application. Nul = pas de restriction de date                                               | Date - Jour  |   8    |                            | X      |            |           |
+| valid_to    | Date de fin d'application. Nul = pas de restriction de date                                                 | Date - Jour  |   8    |                            | X      |            |           |
+| priority    | Priorité de la règle en cas d'application simultanée de plusieurs règles (la plus haute gagne)              | Numérique    |   3    |                            |        | X          |           |
 
 > Chaque règle référence exactement un `Tariff`. Les liens vers `Zone` et `Borne` se font via des associations dédiées (voir ci-dessous).
 
@@ -266,17 +268,17 @@
 
 ## Opération de Maintenance : `operation`
 
-| Code                    | Désignation                                                                             | Type               | Taille | Contrainte  | MCD | MLD |
-| ----------------------- | --------------------------------------------------------------------------------------- | ------------------ | :----: | ----------- | --- | --- |
-| id_operation            | Identifiant de l'opération de maintenance                                               | Alphanum           |  255   | Obligatoire |     |     |
-| id_borne                | Identifiant de la borne concernée                                                       | Alphanum           |  255   | Obligatoire |     |     |
-| id_user                 | Identifiant de l'opérateur ayant effectué la maintenance                                | Alphanum           |  255   | Obligatoire |     |     |
-| incident_discovery_date | Date de découverte de l'incident                                                        | Date               |  ---   |             |     |     |
-| start_from              | Date et heure du début de l'opération de maintenance                                    | Date               |  ---   | Obligatoire |     |     |
-| end_at                  | Date et heure de fin de l'opération, nulle si opération toujours en cours ou en attente | Date               |  ---   |             |     |     |
-| initial_observation     | Observation initiale ayant mené à la demande de maintenance + éventuelle instruction    | Alphanum           |  511   | Obligatoire |     |     |
-| operation_description   | Observation de l'opérateur une fois l'opération effectuée                               | Alphanum           |  511   | Obligatoire |     |     |
-| end_state               | État de la borne à l'issue de l'opération                                               | Numérique - Entier |   1    |             |     |     |
+| Code                    | Désignation                                                                             | Type               | Taille | Contrainte  | Métier | Applicatif | Technique |
+| ----------------------- | --------------------------------------------------------------------------------------- | ------------------ | :----: | ----------- | ------ | ---------- | --------- |
+| id_operation            | Identifiant de l'opération de maintenance                                               | Alphanum           |  255   | Obligatoire |        |            | X         |
+| id_borne                | Identifiant de la borne concernée                                                       | Alphanum           |  255   | Obligatoire |        |            | X         |
+| id_user                 | Identifiant de l'opérateur ayant effectué la maintenance                                | Alphanum           |  255   | Obligatoire |        |            | X         |
+| incident_discovery_date | Date de découverte de l'incident                                                        | Date               |  ---   |             | X      |            |           |
+| start_from              | Date et heure du début de l'opération de maintenance                                    | Date               |  ---   | Obligatoire | X      |            |           |
+| end_at                  | Date et heure de fin de l'opération, nulle si opération toujours en cours ou en attente | Date               |  ---   |             | X      |            |           |
+| initial_observation     | Observation initiale ayant mené à la demande de maintenance + éventuelle instruction    | Alphanum           |  511   | Obligatoire | X      |            |           |
+| operation_description   | Observation de l'opérateur une fois l'opération effectuée                               | Alphanum           |  511   | Obligatoire | X      |            |           |
+| end_state               | État de la borne à l'issue de l'opération                                               | Numérique - Entier |   1    |             |        | X          |           |
 
 > Rattachée au niveau `Borne` (et non `Charge_Point`) : par décision client, une panne d'un seul point de charge affecte la borne entière.
 > `incident_discovery_date` permet de répondre au brief : "voir ce qui est en panne, depuis quand".
@@ -285,12 +287,12 @@
 
 ## Favoris : `favorite`
 
-| Code            | Désignation                    |   Type   | Taille | Contrainte  | MCD | MLD |
-| --------------- | ------------------------------ | :------: | :----: | ----------- | --- | --- |
-| id_favorite     | Identifiant favori             | Alphanum |  255   | Obligatoire |     |     |
-| id_user         | Identifiant utilisateur        | Alphanum |  255   | Obligatoire |     |     |
-| id_charge_point | Identifiant du point de charge | Alphanum |  255   | Obligatoire |     |     |
-| date_added      | Date d'ajout                   |   Date   |  ---   | Obligatoire |     |     |
+| Code            | Désignation                    |   Type   | Taille | Contrainte  | Métier | Applicatif | Technique |
+| --------------- | ------------------------------ | :------: | :----: | ----------- | ------ | ---------- | --------- |
+| id_favorite     | Identifiant favori             | Alphanum |  255   | Obligatoire |        |            | X         |
+| id_user         | Identifiant utilisateur        | Alphanum |  255   | Obligatoire |        |            | X         |
+| id_charge_point | Identifiant du point de charge | Alphanum |  255   | Obligatoire |        |            | X         |
+| date_added      | Date d'ajout                   |   Date   |  ---   | Obligatoire |        | X          |           |
 
 ---
 
@@ -298,55 +300,55 @@
 
 ### `user_vehicule` (Associer_un_vehicule_a_un_utilisateur)
 
-| Code        | Désignation             | Type     | Taille | Contrainte  |
-| ----------- | ----------------------- | -------- | :----: | ----------- |
-| id_user     | Identifiant utilisateur | Alphanum |  255   | Obligatoire |
-| id_vehicule | Identifiant véhicule    | Alphanum |  255   | Obligatoire |
+| Code        | Désignation             | Type     | Taille | Contrainte  | Métier | Applicatif | Technique |
+| ----------- | ----------------------- | -------- | :----: | ----------- | ------ | ---------- | --------- |
+| id_user     | Identifiant utilisateur | Alphanum |  255   | Obligatoire |        |            | X         |
+| id_vehicule | Identifiant véhicule    | Alphanum |  255   | Obligatoire |        |            | X         |
 
 > Un véhicule peut être associé à plusieurs utilisateurs (ex : véhicule partagé), et un utilisateur à plusieurs véhicules.
 
 ### `user_company` (Associer_un_utilisateur_a_une_Entreprise)
 
-| Code       | Désignation             | Type     | Taille | Contrainte  |
-| ---------- | ----------------------- | -------- | :----: | ----------- |
-| id_user    | Identifiant utilisateur | Alphanum |  255   | Obligatoire |
-| id_company | Identifiant entreprise  | Alphanum |  255   | Obligatoire |
+| Code       | Désignation             | Type     | Taille | Contrainte  | Métier | Applicatif | Technique |
+| ---------- | ----------------------- | -------- | :----: | ----------- | ------ | ---------- | --------- |
+| id_user    | Identifiant utilisateur | Alphanum |  255   | Obligatoire |        |            | X         |
+| id_company | Identifiant entreprise  | Alphanum |  255   | Obligatoire |        |            | X         |
 
 > Un utilisateur peut appartenir à plusieurs entreprises (intérim, temps partiel), une entreprise à plusieurs utilisateurs.
 
 ### `role_permission` (Associer_un_role_a_des_permission)
 
-| Code          | Désignation                  | Type     | Taille | Contrainte  |
-| ------------- | ---------------------------- | -------- | :----: | ----------- |
-| id_role       | Identifiant du rôle          | Alphanum |  255   | Obligatoire |
-| id_permission | Identifiant de la permission | Alphanum |  255   | Obligatoire |
+| Code          | Désignation                  | Type     | Taille | Contrainte  | Métier | Applicatif | Technique |
+| ------------- | ---------------------------- | -------- | :----: | ----------- | ------ | ---------- | --------- |
+| id_role       | Identifiant du rôle          | Alphanum |  255   | Obligatoire |        |            | X         |
+| id_permission | Identifiant de la permission | Alphanum |  255   | Obligatoire |        |            | X         |
 
 > Relie un rôle à l'ensemble des permissions qui lui sont accordées.
 
 ### `rule_zone` (Appliquer_une_regle_celon_une_zone)
 
-| Code    | Désignation       | Type     | Taille | Contrainte  |
-| ------- | ----------------- | -------- | :----: | ----------- |
-| id_rule | Identifiant règle | Alphanum |  255   | Obligatoire |
-| id_zone | Identifiant zone  | Alphanum |  255   | Obligatoire |
+| Code    | Désignation       | Type     | Taille | Contrainte  | Métier | Applicatif | Technique |
+| ------- | ----------------- | -------- | :----: | ----------- | ------ | ---------- | --------- |
+| id_rule | Identifiant règle | Alphanum |  255   | Obligatoire |        |            | X         |
+| id_zone | Identifiant zone  | Alphanum |  255   | Obligatoire |        |            | X         |
 
 > Une règle de tarif appliquée à l'échelle d'une zone géographique.
 
 ### `borne_rule` (Associer_des_regles_a_une_borne_spécifique)
 
-| Code     | Désignation       | Type     | Taille | Contrainte  |
-| -------- | ----------------- | -------- | :----: | ----------- |
-| id_rule  | Identifiant règle | Alphanum |  255   | Obligatoire |
-| id_borne | Identifiant borne | Alphanum |  255   | Obligatoire |
+| Code     | Désignation       | Type     | Taille | Contrainte  | Métier | Applicatif | Technique |
+| -------- | ----------------- | -------- | :----: | ----------- | ------ | ---------- | --------- |
+| id_rule  | Identifiant règle | Alphanum |  255   | Obligatoire |        |            | X         |
+| id_borne | Identifiant borne | Alphanum |  255   | Obligatoire |        |            | X         |
 
 > Une règle de tarif appliquée à une borne spécifique (surcharge sur une règle de zone si priorité supérieure).
 
 ### `location_tag` (Identifier_les_services_autours_d_un_site)
 
-| Code        | Désignation                   | Type     | Taille | Contrainte  |
-| ----------- | ----------------------------- | -------- | :----: | ----------- |
-| id_location | Identifiant du site           | Alphanum |  255   | Obligatoire |
-| id_tag      | Identifiant du tag de service | Alphanum |  255   | Obligatoire |
+| Code        | Désignation                   | Type     | Taille | Contrainte  | Métier | Applicatif | Technique |
+| ----------- | ----------------------------- | -------- | :----: | ----------- | ------ | ---------- | --------- |
+| id_location | Identifiant du site           | Alphanum |  255   | Obligatoire |        |            | X         |
+| id_tag      | Identifiant du tag de service | Alphanum |  255   | Obligatoire |        |            | X         |
 
 > Décrit les services/équipements disponibles autour d'un site (ex : café, toilettes, parking couvert).
 
@@ -448,7 +450,12 @@ Pour chaque association du MCD, deux phrases justifient la cardinalité de chaqu
 ## Badge ↔ Recharge
 
 - **Badge (0,N)** : un badge peut n'avoir jamais servi (zéro recharge, badge tout juste créé) ou avoir été utilisé pour plusieurs recharges.
-- **Recharge (1,1)** : chaque recharge doit obligatoirement être identifiée par le badge utilisé, pour déterminer qui doit payer.
+- **Recharge (0,1)** : une recharge peut être initiée depuis l'application sans badge, ou être associée à un seul badge lorsqu'il est utilisé.
+
+## User ↔ Recharge
+
+- **User (0,N)** : un utilisateur peut n'avoir initié aucune recharge ou en avoir initié plusieurs, depuis l'application ou avec un badge.
+- **Recharge (1,1)** : chaque recharge doit obligatoirement être rattachée à l'utilisateur qui l'a initiée, afin de connaître le consommateur et le payeur.
 
 ## Charge_Point ↔ Recharge
 
