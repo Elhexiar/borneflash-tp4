@@ -14,7 +14,7 @@ CREATE TABLE rule(
    valid_to DATE,
    priority SMALLINT,
    id_tariff INT NOT NULL REFERENCES tariff(id_tariff) ON DELETE RESTRICT
-    -- Ensure that a tariff cannot be deleted 
+    -- Ensure that a tariff cannot be deleted if it is referenced by a rule
 
 );
 

@@ -2,6 +2,16 @@
 -- CTEs are temporary variables: each RETURNING makes a generated ID available below.
 BEGIN;
 
+TRUNCATE TABLE
+	role,
+	permission,
+	company,
+	zone,
+	tag,
+	tariff
+RESTART IDENTITY CASCADE;
+
+
 WITH
 -- Access control
 admin_role AS (INSERT INTO role (name_role) VALUES ('Admin') RETURNING id_role),

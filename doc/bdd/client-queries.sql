@@ -119,6 +119,15 @@ WITH active_recharge AS (
     ORDER BY recharge.id_recharge DESC
     LIMIT 1
 )
+
+SELECT  recharge.id_recharge, 
+        recharge.recharge_state,
+        recharge.date_recharge_begin,
+        recharge.price_recharge
+FROM recharge 
+JOIN active_recharge ON active_recharge.id_recharge = recharge.id_recharge
+;
+
 UPDATE recharge
 SET date_recharge_end = NOW() + INTERVAL '1 HOUR',
         recharge_state = 1,
@@ -276,11 +285,12 @@ SET id_invoice = (SELECT id_invoice FROM new_invoice)
 WHERE id_recharge = (SELECT id_recharge FROM recharge_to_invoice);
 
 -- Supprime uniquement les données personnelles de John ; l'utilisateur et ses données de facturation restent conservés.
-DELETE FROM personnal
+
+SELECT id_personnal, first_name, last_name, email_user
+FROM personnal
 WHERE email_user = 'john.doe@example.com';
 
-
-
-
+DELETE FROM personnal
+WHERE email_user = 'john.doe@example.com';
 
 COMMIT;

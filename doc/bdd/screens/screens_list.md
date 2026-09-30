@@ -1,0 +1,22 @@
+- Utilisateur
+  - Historique de recharge
+  - Favoris
+  - Vehicule
+  - Locations + tags
+  - Factures Utilisateur
+- Technicien
+  - Liste des Operations
+  - Operation attribué au technicien
+- Entreprise
+  - Liste Employées + badge
+  - Liste Vehicule
+  - Factures Entreprise
+- Comptable
+  - Factures de tout le monde
+  - Info location operation
+- Exploitant
+  - Historique de toutes les recharges
+  - Energie délivré par location
+  - Montant délivré par location
+  - Locations
+  - Factures de tout le monde
